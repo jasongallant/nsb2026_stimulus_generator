@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CEDResources App="Spike2" AppVer="1105">
+	<Sample S2Ver="1105" Last="Z:\NSB_2026\WEF2026\Rigs\OliviaAlex\Special Project\wef2026-WaveBehavior_Rig04.s2cx" ARange="5" LastSym="$(Here)wef2026-WaveBehavior.s2cx">
+		<!--Sampling configuration saved to Z:\NSB_2026\WEF2026\Rigs\OliviaAlex\Special Project\behavior_control\stimulus_maker\playback.s2cx on Tuesday, June 16, 2026 3:30:31 PM-->
+		<Chans IdealWMRate="20000">
+			<Chan id="0" Type="1" Title="EOD" Port="1" Traces="1" Rate="1e+05" ActRate="1e+05" Units=" Volt" Divide="2" />
+			<Chan id="1" Type="1" Title="Playback" Port="3" Traces="1" Rate="1e+05" ActRate="1e+05" Units=" Volt" Divide="2" />
+			<Chan id="2" Type="3" Title="EODrate" Traces="1" Rate="100" ActRate="100" Units=" Volt" Divide="0" />
+			<Chan id="30" Type="5" Title="Keyboard" Traces="1" ActRate="100" Units=" Volt" Divide="0" />
+		</Chans>
+		<Resol tpa="5" recalc="0" Assume1401="9" TenMHz="1" OptMeth="2" OptUSTo="50" GrpRates="1" />
+		<Mode For="60" EveryUn="1">
+			<Trigs id="0" Chan="-4" Code="-1" Post="1" Chans="-1" />
+			<Trigs id="1" Chan="-4" Code="-1" Post="1" Chans="-1" />
+			<Trigs id="2" Chan="-4" Code="-1" Post="1" Chans="-1" />
+			<Trigs id="3" Chan="-4" Code="-1" Post="1" Chans="-1" />
+		</Mode>
+		<Seq OutType="3" SeqFileSym="$(Here)output_sequences\fish12_ch2.pls" SeqFile="Z:\NSB_2026\WEF2026\Rigs\OliviaAlex\Special Project\behavior_control\stimulus_maker\output_sequences\fish12_ch2.pls" SeqText="" SeqFlags="2" DacMask="3" DigMask="3" DacUnits="V">
+			<Pulses States="27" />
+		</Seq>
+		<PortLabels DACCount="0" DIGCount="0" />
+		<Waves>
+			<Wave id="0" Type="2" Chans="1" Used="1" Label="EODpb" Cycle="1" Rate="99999.99999999997" PtsPer="2049" FileSym="$(Here)waveforms\Bb_EOD_norm2V.smrx" File="Z:\NSB_2026\WEF2026\Rigs\OliviaAlex\Special Project\behavior_control\stimulus_maker\waveforms\Bb_EOD_norm2V.smrx" FTo="0.020480000000000005" Key="66" Wave="nP+k/6f/rf+z/6r/pP+c/7P/pP+q/5z/qv+z/6T/rf+i/63/nP+i/5z/s/+Z/6f/p/+f/6T/__n/+t/5D/pP+f/63/pP+k/6f/ov+2/5z/ov+k/6T/ov+w/5//rf+c/6T/mf+w/63/n/+k/5P/__ov+T/6T/mf+n/5z/n/+q/5n/qv+c/7P/ov+w/5//p/+i/6L/s/+Q/5//nP+f/5n/tv+Q/63/__mf+f/6r/ov+n/5//nP+Z/5//sP+n/6T/n/+2/5//mf+c/63/mf+k/5z/s/+k/7D/n/+n/6r/__pP+i/5//sP+f/6T/p/+w/63/s/+q/6r/pP+w/63/nP+q/5//sP+k/6T/pP+q/6T/n/+t/5z/__uf+i/7D/mf+i/5//rf+z/6L/sP+c/7b/nP+z/5n/pP+n/6f/rf+f/7n/uf+z/6T/uf+c/7D/__n/+q/7P/n/+w/5//sP+k/63/ov+2/5//tv+n/6T/qv+k/7D/pP+7/6L/s/+k/7b/ov+w/6T/__pP+2/6T/rf+i/7D/ov+z/6f/qv+k/6T/rf+c/7P/qv+7/5P/rf+w/63/p/+n/6T/qv+q/5//__qv+k/7P/qv+z/6T/nP+k/6T/s/+c/7D/n/+z/6f/p/+f/7P/p/+n/63/qv+z/6f/u/+k/7b/__ov+q/6f/rf+k/7b/s/+i/7P/sP+5/5z/s/+7/6f/uf+f/6r/n/+t/5//p/+i/7b/rf+t/7D/__p/+n/6f/p/+T/7D/n/+k/5//ov+i/7D/p/+i/63/ov+z/5z/qv+Z/6f/mf+2/5P/ov+n/5n/__qv+f/7n/nP+n/5P/s/+t/5//sP+k/63/ov+n/6f/sP+k/7D/mf+c/6T/sP+t/6T/p/+i/6T/__sP+f/6L/p/+i/6T/s/+T/7b/n/+w/63/rf+f/6f/pP+f/7D/mf+q/6T/qv+W/7n/nP+w/6T/__ov+n/5//pP+i/63/sP+5/6L/sP+q/6T/pP+w/5//mf+7/6T/p/+f/6r/p/+n/5b/sP+5/63/__p/+q/6f/p/+5/5//p/+q/5z/ov+t/6T/p/+z/6f/sP+k/6T/s/+q/6L/s/+w/63/p/+f/7P/__p/+k/6L/qv+i/5n/s/+z/6f/rf+z/5b/rf+c/7D/ov+n/5z/qv+n/63/uf+c/6r/k/+7/6T/__qv+2/6T/qv+f/6f/n/+w/6T/p/+q/7D/pP+q/7b/p/+w/7D/sP+w/7b/pP+f/6T/rf+f/6r/__rf+z/7b/p/+z/5z/pP+i/6r/qv+w/63/rf+7/6L/s/+i/7b/p/+t/6T/sP+k/7D/sP+k/6r/__p/+z/6f/s/+2/7D/qv+k/7b/pP/B/6T/xP+t/7P/rf+q/7D/rf+t/63/sP+f/6r/nP+q/5//__vv+w/6r/uf+n/7b/p/+t/6f/s/+t/6r/sP+q/7n/sP+n/5z/s/+Z/7D/nP+5/63/uf+z/5b/__pP+i/6T/sP+z/6f/sP+q/8T/p/+k/63/n/+w/6T/sP+c/7P/p/+7/6T/pP+n/7D/p/+n/7b/__p/+n/5n/tv+c/7b/lv+t/6r/qv+z/6L/rf+w/63/n/+q/7D/pP+5/6T/qv+k/6f/rf+w/6L/__qv+w/5z/qv+t/7P/pP+w/7P/tv+Z/7D/qv+k/7P/tv+k/6f/vv+T/7v/qv+2/6r/s//B/7D/__uf+t/6L/n/+z/6T/pP+k/6L/qv+z/6r/s/+t/5z/tv+T/7v/rf+z/5n/n/+Z/63/rf+w/7b/__mf+n/6r/p/+q/7P/sP+k/5z/pP+q/7D/rf+n/7D/pP++/7D/p/+t/6r/u/+f/7D/qv+5/6T/__p/+i/6L/p/+n/6r/rf+2/6f/u/+c/63/pP+k/6f/sP+z/6r/s/+w/63/ov+2/6T/s/+c/6f/__qv+f/6r/n/+t/7D/tv+w/6f/pP+z/6r/tv+k/6r/s/+f/6r/s/+q/6T/pP+c/6r/sP+k/6r/__ov+k/63/u/+f/7D/p/+k/7D/rf+z/5z/s/+f/5n/ov+2/6T/rf+w/6T/rf+Z/7D/s/+2/6T/__uf+t/7n/qv+2/7P/s/+5/5//x/+z/6r/rf+k/7P/s/+k/6f/qv+f/6f/pP+t/63/rf+w/63/__s/+q/7b/s/++/5//s/+i/7v/s/+q/63/s/+2/6L/sP+f/7D/qv+n/6r/sP+k/7D/uf+5/63/__qv++/6T/qv+f/7P/s/+2/6L/ov+q/6f/sP+k/7P/ov+t/6f/uf+f/63/uf+z/7n/pP+w/6T/__u/+W/7P/p/+k/7D/ov+q/6r/s/+f/7n/sP+z/6f/pP+z/7b/sP+q/7D/pP+n/6T/s/+k/63/__n/+t/7P/p/+w/6T/sP+c/6T/p/+7/6r/p/+t/7D/sP+t/6r/pP+n/5D/n/+i/7D/rf+c/7D/__s/+q/6L/tv+k/6T/qv+5/6f/qv+q/6f/sP+w/63/rf+k/63/p/+w/7D/rf+q/63/qv+w/5//__sP+t/7P/pP+q/7D/sP+5/6L/s/+k/7v/nP+q/7D/s/+n/63/qv+q/77/sP+t/7D/tv+k/6f/__sP+2/7D/rf+5/6f/rf+i/6T/n/+5/7D/qv/E/63/qv+2/7D/ov+c/5z/nP+N/4v/fP9o/1H/__Kf8B/7b+ff4Y/p39HP2M/O77P/uW+hj65/nq+S76ivpC+/f7r/xj/R7+yv5u/wYAdgAIAYQB__6wFbAtQCWAPtA4sERgUOBlMHowj+Ca0L4g3BEIAURxn5HiolQTB1P5JPXVNcSGcvfwSD0Dqr__WpqambGinbO4yH3cHOtG9LD53/zH/ub/rwAdAWQBigGmAb0BrwG6AakBmwGMAZIBdgFqAVkB__UAFCASsBHQEXAQgB9wDmANIA2ADGALgAuwCqAJYAkACQAHwAfwBiAG0AVABfAF8ARQBLAEgA__SwA6ADQAIAAxACAAJgApABIAFwAUAP3/AAAMAPX/+//4//j/6f/m//L/8v/Y/+H/5P/b/9v/__yv/V/9v/0v/H/9D/zf++/9D/uf/K/8H/x/+7/8H/uf+5/7v/wf+5/7b/vv+2/7P/tv++/7v/__rf+t/7D/rf+i/7D/ov+w/6f/sP+q/63/mf+t/63/pP+q/6r/sP+W/6f/n/+q/63/ov+k/6L/__rf+f/7P/pP+n/6L/qv+i/6T/p/+i/6r/ov+w/6r/u/+c/6f/sP+q/5n/ov+n/6f/qv+k/63/__nP+t/6r/qv+n/6r/pP+Z/6f/rf+k/5//sP+i/63/nP+W/7P/n/+q/6r/p/+f/6L/s/+n/6T/__sP+w/5z/s/+i/7P/nP+n/7P/qv+t/8T/mf+k/7b/qv+n/5//s/+n/7P/n/+q/6f/n/+k/5n/__p/+q/6f/sP+5/6T/n/+c/6L/sP+c/6f/pP+k/5P/pP+i/5//pP+f/5//sP+2/6r/qv+Z/6T/__ov+t/5z/s/+w/6T/qv+Q/7D/rf+k/5b/qv+i/6L/qv+q/6r/pP+k/6L/qv+f/6L/n/+f/6r/__qv+W/5z/rf+k/5n/nP+f/5z/ov+t/6f/ov+w/6f/nP+q/5b/pP+k/6L/jf+f/6L/ov+n/6f/__qv+k/6L/p/+q/6f/pP+i/6L/p/+w/6r/p/+c/5z/nP+k/6T/nP+i/6r/ov+t/6r/rf+n/6r/__ov+z/6T/ov+f/6r/pP+z/63/jf+i/6L/ov+n/63/pP+7/63/lv+2/5//ov+t/6L/pP+w/5z/__mf+w/6r/p/+k/5z/pP+f/7D/p/+i/5//rf+q/6r/p/+k/6r/qv+w/6f/rf+z/6T/pP+2/6T/__sP+i/63/nP+n/5//p/+t/5//rf+i/5//n/+n/5//n/+k/6T/qv+t/7D/nP+w/5//rf+q/6T/__sP+n/63/ov+n/6r/n/+i/6L/rf+z/7D/s/+f/63/qv+c/5n/qv+W/5z/pP+c/7P/pP+t/43/__p/+q/6f/n/+n/6L/pP+c/6f/qv+c/6r/p/+n/5//sP+k/6r/pP+i/7P/p/+k/6T/ov+n/5//__p/+q/6r/n/+f/5//ov+Z/7D/rf+i/6T/ov+z/7D/n/+q/7P/p/+q/6T/pP+n/6r/xP+w/63/__qv+2/6T/ov+w/63/rf+n/6T/rf+f/6T/uf+i/6L/n/+i/5n/qv+q/7D/ov+f/63/ov+t/6L/__qv+f/6L/qv+n/6T/nP+q/6T/sP+n/6r/nP+n/5n/qv+f/6f/p/+i/7b/ov+i/63/qv+c/7P/__ov+c/63/sP+i/7P/u/+i/6L/rf+i/5//nP+c/5z/pP+W/6L/pP+t/63/p/+z/6L/qv+T/6T/__ov+t/5//p/+k/6r/pP+Z/6f/n/+k/6f/rf+f/6f/mf+i/5z/pP+Z/5//s/+t/63/nP+c/6f/__pP+k/7D/s/+i/7D/nP+k/5//rf+w/7D/p/+i/6f/pP+i/5z/p/+i/6f/qv+k/6f/rf+f/6f/__pP+q/6L/qv+t/6f/ov+q/63/mf+c/5b/p/+c/6L/ov+n/6r/qv+k/6L/ov+q/6T/qv+k/5//__p/+i/7P/rf+q/6r/rf+Z/5//p/+q/6r/p/+Z/6T/p/+f/6f/ov+n/5//tv+k/6L/rf+i/5z/__pP+i/5//pP+z/7n/mf+2/6T/ov+Z/7P/ov+z/6T/rf+n/6f/rf+w/6f/qv+q/5z/n/+f/6L/__pP+c/6T/qv+Z/6T/n/+c/6T/mf+t/6r/p/+q/6r/lv+f/6T/pP+f/6T/sP+k/6T/p/+z/6r/__pP+k/5z/qv+k/6f/qv+i/6f/n/+f/5//qv+k/6T/rf+i/6r/lv+q/5z/ov+k/7D/pP+w/6T/__pP+w/7D/n/+q/6T/pP+w/6L/qv+f/6T/p/+5/6r/ov+k/6f/p/+Z/7D/rf+k/5b/pP+c/5z/__qv+t/6f/sP+q/6f/ov+t/7b/qv+n/6T/sP+i/5//n/+z/7b/p/+n/63/lv+t/5//qv+w/6T/__n/+w/6L/s/+f/5//pP+T/6L/ov+n/5z/pP+W/6r/qv+c/7b/ov+z/63/s/+n/7P/rf+n/5D/__p/+t/7D/rf+i/7P/qv+k/6L/tv+k/7n/ov+n/6r/ov+2/6T/pP+q/6f/n/+2/6r/qv+t/7P/__rf+n/6T/mf+w/6T/p/+i/63/rf+t/6f/qv+w/6T/p/+k/6f/p/+n/6f/ov+5/6r/rf+k/7P/__qv+w/6L/qv+n/5z/uf+k/6L/sP+q/5D/sP+i/7D/nP+w/63/p/+2/7D/pP+k/5z/qv+t/6f/__sP+n/6f/rf+z/7D/rf+z/6r/tv+q/7P/p/+k/6T/rf+n/7P/s/+Z/7b/u/+k/6r/qv+q/6T/__p/+z/6T/pP+w/7D/qv+q/6f/pP+i/5//n/+f/63/rf+k/63/qv+z/6f/qv+n/5z/qv+q/6T/__ov+q/5z/mf+W/5b/p/+n/6f/rf+w/7D/rf+2/63/p/+k/6r/pP+n/6T/ov+f/6r/s/+t/6f/__qv+f/63/qv+q/6T/p/+t/6r/rf+w/7n/qv+t/6f/sP+n/63/rf+z/6T/ov+n/wAA" />
+		</Waves>
+		<Auto />
+		<Script />
+		<CondPorts Count="31">
+			<c id="1" Source="2" />
+			<c id="2" Source="2" />
+			<c id="3" Source="2" />
+			<c id="4" Source="2" />
+			<c id="5" Source="2" />
+			<c id="6" Source="2" />
+			<c id="7" Source="2" />
+			<c id="8" Source="2" />
+			<c id="9" Source="2" />
+			<c id="10" Source="2" />
+			<c id="11" Source="2" />
+			<c id="12" Source="2" />
+			<c id="13" Source="2" />
+			<c id="14" Source="2" />
+			<c id="15" Source="2" />
+			<c id="16" Source="2" />
+			<c id="17" Source="2" />
+			<c id="18" Source="2" />
+			<c id="19" Source="2" />
+			<c id="20" Source="2" />
+			<c id="21" Source="2" />
+			<c id="22" Source="2" />
+			<c id="23" Source="2" />
+			<c id="24" Source="2" />
+			<c id="25" Source="2" />
+			<c id="26" Source="2" />
+			<c id="27" Source="2" />
+			<c id="28" Source="2" />
+			<c id="29" Source="2" />
+			<c id="30" Source="2" />
+			<c id="31" Source="2" />
+		</CondPorts>
+		<ForceOP />
+		<Talkers />
+		<SampCtl t="103" b="0" l="9" r="2" />
+		<SeqCtl t="133" b="0" l="-2" r="2" />
+		<SampSta t="163" b="0" l="-2" r="2" />
+		<TMList />
+		<TMDlg />
+	</Sample>
+	<DocTime>
+		<View InfBkCR="0">
+			<WPlace flags="2" showc="3" minx="-1" miny="-1" maxx="-8" maxy="-31" t="234" b="794" l="234" r="1894" />
+			<Font hgt="-11" hthou="-115" wgt="400" paf="16" fnam="Times New Roman" />
+			<Chan Chan="30" DMode="9" DWidth="0.9999999999999999" DBoth="1" DHLine="1" Ax="0" AdcAxMax="1" FreqAxMax="2" ChType="5" BackOv="0" />
+			<Chan Chan="3" DMode="11" DWidth="0.9999999999999999" AxMin="-5" AxMax="5" AdcAxMin="-5" AdcAxMax="5" FreqAxMax="40000" AxType="1" ChType="1" BackOv="0" />
+			<Chan Chan="2" DMode="11" DWidth="0.9999999999999999" AxMin="-3.8556137084960938" AxMax="4.799064636230469" AdcAxMin="-3.8556137084960938" AdcAxMax="4.799064636230469" FreqAxMax="40000" AxType="1" ChType="1" BackOv="0" />
+			<Chan Chan="1" DMode="7" DWidth="0.024999999999999998" DTrig="1" DDSize="7" DBoth="1" DHLine="1" AxMax="100" AdcAxMax="1" AxType="2" ChType="3" BackOv="0" />
+			<Chan Chan="0" DMode="7" DWidth="0.024999999999999998" DDSize="6" DBoth="1" DHLine="1" AxMax="100" AdcAxMax="1" AxType="2" ChType="3" BackOv="0" />
+			<XInfo Left="1488.1758601857582" Right="1498.1758601857587" XAxSmall="5" CRBack="0" VCLabMode="2" HCLabMode="1" VCCount="3">
+				<VCur id="0" LabMode="2" LabPos="0.2" Num="0" />
+				<VCur id="1" Pos="423.84489350081924" LabMode="2" LabPos="0.2" Num="1" />
+				<VCur id="2" Pos="434.88803932277443" LabMode="2" LabPos="0.2" Num="2" />
+			</XInfo>
+			<ChOrder Chans="5">
+				<c id="0" Chan="30" />
+				<c id="1" Chan="3" />
+				<c id="2" Chan="2" />
+				<c id="3" Chan="1" />
+				<c id="4" />
+			</ChOrder>
+			<CursVals />
+			<CursRegs />
+			<ScrollPos />
+			<OvDraw3d YProp="0.5" XScale="0.5" YScale="0.5" />
+		</View>
+	</DocTime>
+	<App>
+		<WPlace flags="2" showc="3" minx="-1" miny="-1" maxx="-1" maxy="-1" t="156" b="915" l="156" r="1596" />
+	</App>
+</CEDResources>

@@ -1,0 +1,120 @@
+'==============================================================================
+' run_playback.s2s   (Spike2 v11)
+'
+' CONFIGURATION BUILDER for the recorded-EOD playback (build_playback.py output).
+'
+' Run this ONCE. It builds the recording configuration in code, loads the EOD
+' waveform into play-wave area "B", attaches the playback output sequencer
+' (fish12_ch2.pls), saves a sampling configuration file (playback.s2cx), and opens
+' a ready (un-started) sampling document. THEN IT EXITS -- Spike2 is back under
+' normal manual control.
+'
+' To run the experiment (this session, or any later session by just loading
+' playback.s2cx from the File menu):
+'   1. Press the Spike2 Start button to begin sampling. NOTHING PLAYS YET --
+'      the sequencer idles at a HALT.
+'   2. Press  P  (or click the "Play" button on the SEQUENCER CONTROL PANEL) to
+'      play the recorded EOD train once. It returns to idle when done.
+'      Press  S  to stop a train early / return to idle.
+'      Each keypress is logged in the keyboard-marker channel, so the recording
+'      knows when playback ran.
+'   3. Stop and Save with the normal Spike2 Sample controls.
+'
+' The area code here MUST match the .pls (a LETTER, so it doesn't clash with any
+' 0-9 keyboard jump keys):  "B" = the playback EOD (Bb_EOD_norm2V).
+'
+' WIRING (EDIT the constants below to match the rig):
+'   EOD recording electrode -> 1401 ADC port EODPORT%
+'   Playback / DAC monitor  -> 1401 ADC port MONPORT%
+'   Stimulus DAC            -> DAC% (stimulus electrodes)
+'==============================================================================
+
+'==== user settings ==========================================================
+var BASE$ := "Z:\\NSB_2026\\WEF2026\\Rigs\\OliviaAlex\\Special Project\\behavior_control\\stimulus_maker\\";  'repo root on the rig -- double EVERY backslash
+
+const WAVEFILE$ := "waveforms\\Bb_EOD_norm2V.smrx";      'waveform loaded into area "B" (100 kHz source)
+const SEQFILE$  := "output_sequences\\fish12_ch2.pls";   'playback sequencer from build_playback.py
+const AREA$     := "B";                     'play-wave area code -- MUST match the .pls WAVEGO
+
+const DAC%     := 0;        'DAC channel wired to the stimulus electrodes
+const SRCCHAN% := 1;        'waveform channel inside the .smrx (expected 100 kHz)
+
+' --- recording configuration ---
+const RIG1401% := 9;        'SampleOptimise 1401 type: 9 = Power1401-3 (from Assume1401)
+const ADCRATE  := 100000.0; 'recording rate (Hz); captures fast pulse EODs
+const EODPORT% := 1;        'ADC port: fish EOD recording electrode
+const MONPORT% := 3;        'ADC port: playback / DAC output monitor
+const EODCHAN% := 1;        'stored channel for the EOD response
+const MONCHAN% := 2;        'stored channel for the playback monitor
+
+' --- live EOD-rate trace (TTL pulse per EOD) ---
+const EVTPORT% := 0;        '1401 Event input carrying the per-EOD TTL
+const EVTCHAN% := 3;        'stored event channel of EOD times
+const EVTRATE  := 100;      'expected max sustained EOD rate (Hz), for buffering
+const RATEAXIS := 80.0;     'top of the live rate axis (Hz)
+
+const VIEWDUR := 45.0;      'displayed timebase (s); playback train is ~39 s long
+'=============================================================================
+
+
+' Add a play-wave area from a Spike2 data file. The file variant of PlayWaveAdd
+' takes the replay RATE from the source channel, so the .smrx sets the rate
+' (must be 100 kHz). mem%=1 copies the data to memory so we can close the file.
+func AddWaveFromSmrx%(key$, lb$, file$)
+var path$ := BASE$ + file$;
+var src% := FileOpen(path$, 0, 0);       '0 = Spike2 data file, opened invisibly
+if src% < 0 then Message("Cannot open: " + path$); halt; endif;
+var eT := MaxTime();                     'full duration of the source waveform
+var fs := 0.0;
+if BinSize(SRCCHAN%) > 0.0 then fs := 1.0 / BinSize(SRCCHAN%); endif;  'actual sample rate
+var r% := PlayWaveAdd(key$, lb$, DAC%, 0.0, eT, SRCCHAN%, 1);  'reads current view; 1 = to memory
+View(src%); FileClose();                 'close source (data already copied to memory)
+if r% < 0 then Message("PlayWaveAdd failed (%d): %s", r%, path$); halt; endif;
+PrintLog("  %s -> area %s : 0..%.5f s, chan %d @ %.0f Hz, %d bytes\n",
+         file$, key$, eT, SRCCHAN%, fs, r%);
+if fs < 99000.0 or fs > 101000.0 then
+    Message("%s chan %d is %.0f Hz, not ~100 kHz -- playback rate will be wrong.", file$, SRCCHAN%, fs);
+endif;
+return r%;
+end;
+
+
+'---- 1. build the sampling configuration (recording channels) -----------------
+SampleClear();                            'reset to a known-clean configuration
+SampleOptimise(2, 1, RIG1401%);           'full clock optimise; group equal ideal rates
+SampleWaveform(EODCHAN%, EODPORT%, ADCRATE);   'fish EOD response
+SampleWaveform(MONCHAN%, MONPORT%, ADCRATE);   'playback / DAC monitor
+SampleEvent(EVTCHAN%, EVTPORT%, 1, EVTRATE);   'EOD TTL events (type 1 = rising edge)
+SampleTitle$(EODCHAN%, "EOD");
+SampleTitle$(MONCHAN%, "Playback");
+SampleTitle$(EVTCHAN%, "EODrate");
+
+'---- 2. load the playback waveform into play-wave area "B" from the .smrx ------
+AddWaveFromSmrx%(AREA$, "EODpb", WAVEFILE$);
+PlayWaveCycles(AREA$, 1);                  'exactly one EOD per trigger
+
+'---- 3. attach the playback sequencer and allow keyboard / control-panel jumps -
+var seq$ := BASE$ + SEQFILE$;
+if SampleSequencer(1, seq$) < 0 then Message("Bad sequencer: " + seq$); halt; endif;  '1 = text sequencer
+SampleSeqCtrl(1, 0);                       '0 = allow keyboard + control panel + script jumps
+
+'---- 4. export the sampling configuration so it can be loaded directly later ---
+'  The saved config includes the channels, the play-wave DATA, and the sequencer
+'  link, so you can skip this script next time: File > Load Configuration.
+var cfg$ := BASE$ + "playback.s2cx";
+if FileSaveAs(cfg$, 6, 1) < 0 then Message("Could not save config: " + cfg$); endif;  '6 = sampling configuration; yes%=1 overwrite
+
+'---- 5. open a ready (UN-started) sampling document ---------------------------
+'  Nothing samples yet. Press Start, then press P (or the control-panel Play
+'  button) to play the recorded EOD train; S stops it -- see header.
+var vh% := FileNew(0, 1);                  '0 = sampling doc from current config; 1 = visible
+if vh% < 0 then Message("FileNew failed"); halt; endif;
+
+' show the EOD event channel live as instantaneous frequency (= EOD rate, Hz)
+DrawMode(EVTCHAN%, 7, 0, 0, 2);           '7 = instantaneous frequency; as%=2 = line
+YRange(EVTCHAN%, 0.0, RATEAXIS);          'fixed rate axis so the live trace doesn't jump
+ChanShow(EVTCHAN%);
+XRange(0.0, VIEWDUR);                      'time window spans one whole playback train
+
+PrintLog("playback ready: seq=%s  ADC=%g Hz  config=%s\n", seq$, ADCRATE, cfg$);
+'---- script EXITS here -- Spike2 returns to normal manual control -------------
