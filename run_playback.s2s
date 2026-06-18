@@ -4,54 +4,60 @@
 ' CONFIGURATION BUILDER for the recorded-EOD playback (build_playback.py output).
 '
 ' Run this ONCE. It builds the recording configuration in code, loads the EOD
-' waveform into play-wave area "B", attaches the playback output sequencer
-' (fish12_ch2.pls), saves a sampling configuration file (playback.s2cx), and opens
-' a ready (un-started) sampling document. THEN IT EXITS -- Spike2 is back under
-' normal manual control.
+' waveform from a Spike2 .smrx file into play-wave area "B", attaches the
+' playback output sequencer (fish12_ch2.pls -- three trains in one .pls), saves a
+' sampling configuration file (playback.s2cx), and opens a ready (un-started)
+' sampling document. THEN IT EXITS -- Spike2 is back under normal manual control.
 '
 ' To run the experiment (this session, or any later session by just loading
 ' playback.s2cx from the File menu):
 '   1. Press the Spike2 Start button to begin sampling. NOTHING PLAYS YET --
 '      the sequencer idles at a HALT.
-'   2. Press  P  (or click the "Play" button on the SEQUENCER CONTROL PANEL) to
-'      play the recorded EOD train once. It returns to idle when done.
-'      Press  S  to stop a train early / return to idle.
+'   2. Press one key (or click the matching button on the SEQUENCER CONTROL
+'      PANEL) to play one train once; it returns to idle when done:
+'         P = EXACT recorded EOD train
+'         R = TIME-REVERSED train
+'         X = SCRAMBLED-interval train
+'         S = stop a train early / return to idle
 '      Each keypress is logged in the keyboard-marker channel, so the recording
-'      knows when playback ran.
+'      knows which train ran and when.
 '   3. Stop and Save with the normal Spike2 Sample controls.
 '
 ' The area code here MUST match the .pls (a LETTER, so it doesn't clash with any
-' 0-9 keyboard jump keys):  "B" = the playback EOD (Bb_EOD_norm2V).
+' 0-9 keyboard jump keys):  "B" = the playback EOD.
+' All three trains play the SAME waveform; only the interval order differs.
 '
-' WIRING (EDIT the constants below to match the rig):
-'   EOD recording electrode -> 1401 ADC port EODPORT%
-'   Playback / DAC monitor  -> 1401 ADC port MONPORT%
-'   Stimulus DAC            -> DAC% (stimulus electrodes)
+' WIRING (EDIT the constants below to match the rig) -- three monitored signals:
+'   Physiology signal  -> 1401 ADC port PHYSPORT%   (stored as waveform "Physiology")
+'   EOD Command        -> 1401 Event input CMDPORT% (stored as events "EOD Command")
+'   Stimulus pulse     -> DAC% (stimulus electrodes); loop DAC% back into ADC port
+'                         STIMPORT% to record it as waveform "Stimulus"
 '==============================================================================
 
 '==== user settings ==========================================================
 var BASE$ := "Z:\\NSB_2026\\WEF2026\\Rigs\\OliviaAlex\\Special Project\\behavior_control\\stimulus_maker\\";  'repo root on the rig -- double EVERY backslash
 
-const WAVEFILE$ := "waveforms\\Bb_EOD_norm2V.smrx";      'waveform loaded into area "B" (100 kHz source)
-const SEQFILE$  := "output_sequences\\fish12_ch2.pls";   'playback sequencer from build_playback.py
+const WAVEFILE$ := "waveforms\\BB_T48_DAY4_MAY11_norm.smrx"; 'waveform .smrx -> area "B" (100 kHz source)
+'const WAVEFILE$ := "waveforms\\BB_T48_DAY0_MAY7_norm.smrx"; 'day-0 alternative
+const SEQFILE$  := "output_sequences\\fish12_ch2.pls";   'playback sequencer from build_playback.py (3 trains)
 const AREA$     := "B";                     'play-wave area code -- MUST match the .pls WAVEGO
 
 const DAC%     := 0;        'DAC channel wired to the stimulus electrodes
 const SRCCHAN% := 1;        'waveform channel inside the .smrx (expected 100 kHz)
 
-' --- recording configuration ---
-const RIG1401% := 9;        'SampleOptimise 1401 type: 9 = Power1401-3 (from Assume1401)
-const ADCRATE  := 100000.0; 'recording rate (Hz); captures fast pulse EODs
-const EODPORT% := 1;        'ADC port: fish EOD recording electrode
-const MONPORT% := 3;        'ADC port: playback / DAC output monitor
-const EODCHAN% := 1;        'stored channel for the EOD response
-const MONCHAN% := 2;        'stored channel for the playback monitor
+' --- recording configuration (three monitored signals) ---
+const RIG1401%  := 9;        'SampleOptimise 1401 type: 9 = Power1401-3 (from Assume1401)
+const ADCRATE   := 100000.0; 'recording rate (Hz); captures fast pulse waveforms
+const PHYSPORT% := 1;        'ADC port: physiology signal
+const STIMPORT% := 3;        'ADC port: DAC%-loopback monitor of the stimulus pulse
+const PHYSCHAN% := 1;        'stored waveform channel for the physiology signal
+const STIMCHAN% := 2;        'stored waveform channel for the stimulus monitor
 
-' --- live EOD-rate trace (TTL pulse per EOD) ---
-const EVTPORT% := 0;        '1401 Event input carrying the per-EOD TTL
-const EVTCHAN% := 3;        'stored event channel of EOD times
-const EVTRATE  := 100;      'expected max sustained EOD rate (Hz), for buffering
-const RATEAXIS := 80.0;     'top of the live rate axis (Hz)
+' --- EOD command events (TTL on a 1401 Event input) ---
+const CMDPORT% := 1;        '1401 Event input carrying the EOD command
+const CMDCHAN% := 3;        'stored event channel of EOD command times
+const CMDRATE  := 100;      'expected max sustained command rate (Hz), for buffering
+const RATEAXIS := 80.0;     'top of the live command-rate axis (Hz)
 
 const VIEWDUR := 45.0;      'displayed timebase (s); playback train is ~39 s long
 '=============================================================================
@@ -82,12 +88,12 @@ end;
 '---- 1. build the sampling configuration (recording channels) -----------------
 SampleClear();                            'reset to a known-clean configuration
 SampleOptimise(2, 1, RIG1401%);           'full clock optimise; group equal ideal rates
-SampleWaveform(EODCHAN%, EODPORT%, ADCRATE);   'fish EOD response
-SampleWaveform(MONCHAN%, MONPORT%, ADCRATE);   'playback / DAC monitor
-SampleEvent(EVTCHAN%, EVTPORT%, 1, EVTRATE);   'EOD TTL events (type 1 = rising edge)
-SampleTitle$(EODCHAN%, "EOD");
-SampleTitle$(MONCHAN%, "Playback");
-SampleTitle$(EVTCHAN%, "EODrate");
+SampleWaveform(PHYSCHAN%, PHYSPORT%, ADCRATE);  'physiology signal
+SampleWaveform(STIMCHAN%, STIMPORT%, ADCRATE);  'stimulus pulse (DAC%-loopback monitor)
+SampleEvent(CMDCHAN%, CMDPORT%, 1, CMDRATE);    'EOD command events (type 1 = rising edge)
+SampleTitle$(PHYSCHAN%, "Physiology");
+SampleTitle$(STIMCHAN%, "Stimulus");
+SampleTitle$(CMDCHAN%, "EOD Command");
 
 '---- 2. load the playback waveform into play-wave area "B" from the .smrx ------
 AddWaveFromSmrx%(AREA$, "EODpb", WAVEFILE$);
@@ -105,15 +111,15 @@ var cfg$ := BASE$ + "playback.s2cx";
 if FileSaveAs(cfg$, 6, 1) < 0 then Message("Could not save config: " + cfg$); endif;  '6 = sampling configuration; yes%=1 overwrite
 
 '---- 5. open a ready (UN-started) sampling document ---------------------------
-'  Nothing samples yet. Press Start, then press P (or the control-panel Play
-'  button) to play the recorded EOD train; S stops it -- see header.
+'  Nothing samples yet. Press Start, then press P (exact) / R (reversed) /
+'  X (scrambled) to play a train; S stops it -- see header.
 var vh% := FileNew(0, 1);                  '0 = sampling doc from current config; 1 = visible
 if vh% < 0 then Message("FileNew failed"); halt; endif;
 
-' show the EOD event channel live as instantaneous frequency (= EOD rate, Hz)
-DrawMode(EVTCHAN%, 7, 0, 0, 2);           '7 = instantaneous frequency; as%=2 = line
-YRange(EVTCHAN%, 0.0, RATEAXIS);          'fixed rate axis so the live trace doesn't jump
-ChanShow(EVTCHAN%);
+' show the EOD command channel live as instantaneous frequency (= command rate, Hz)
+DrawMode(CMDCHAN%, 7, 0, 0, 2);           '7 = instantaneous frequency; as%=2 = line
+YRange(CMDCHAN%, 0.0, RATEAXIS);          'fixed rate axis so the live trace doesn't jump
+ChanShow(CMDCHAN%);
 XRange(0.0, VIEWDUR);                      'time window spans one whole playback train
 
 PrintLog("playback ready: seq=%s  ADC=%g Hz  config=%s\n", seq$, ADCRATE, cfg$);

@@ -2,7 +2,7 @@
 <CEDResources App="Spike2" AppVer="1105">
 	<DocTime>
 		<View InfBkCR="0">
-			<WPlace flags="0" showc="1" minx="-1" miny="-1" maxx="-1" maxy="-1" t="208" b="768" l="208" r="1868" />
+			<WPlace flags="0" showc="1" minx="-1" miny="-1" maxx="-1" maxy="-1" t="286" b="842" l="114" r="1770" />
 			<Font hgt="-11" hthou="-115" wgt="400" paf="16" fnam="Times New Roman" />
 			<Chan Chan="0" DMode="11" DWidth="-1.0000000000000002e-06" DDSize="-1" AxMin="-0.25" AxMax="0.25" AdcAxMin="-0.25" AdcAxMax="0.25" FreqAxMax="49999.999999999985" AxType="1" ChType="1" BackOv="0" />
 			<XInfo Right="0.020480000000000005" XAxSmall="5" CRBack="0" VCLabMode="2" HCLabMode="1" VCCount="1">
